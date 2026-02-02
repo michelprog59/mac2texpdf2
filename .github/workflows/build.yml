@@ -27,7 +27,7 @@ jobs:
     - name: Build with Nuitka (Windows)
       run: |
         python -m nuitka --standalone --onefile `
-          --enable-plugin=anti-bloat `
+          --enable-plugin=tk-inter `
           --windows-console-mode=disable `
           --assume-yes-for-downloads `
           --output-filename=mac2texpdf2-windows.exe `
@@ -64,7 +64,7 @@ jobs:
     - name: Build with Nuitka (Linux)
       run: |
         python -m nuitka --standalone --onefile \
-          --enable-plugin=anti-bloat \
+          --enable-plugin=tk-inter \
           --assume-yes-for-downloads \
           --output-filename=mac2texpdf2-linux \
           mac2texpdf2.py
