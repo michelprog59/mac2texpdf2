@@ -1,0 +1,127 @@
+name: Build Executables
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Permet de lancer manuellement
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nuitka ordered-set zstandard
+        pip install reportlab pypdf PyMuPDF
+    
+    - name: Build with Nuitka (Windows)
+      run: |
+        python -m nuitka --standalone --onefile `
+          --enable-plugin=anti-bloat `
+          --windows-console-mode=disable `
+          --output-filename=mac2texpdf2-windows.exe `
+          mac2texpdf2.py
+    
+    - name: Upload Windows artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mac2texpdf2-windows
+        path: mac2texpdf2-windows.exe
+        retention-days: 90
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ccache patchelf
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nuitka ordered-set zstandard
+        pip install reportlab pypdf PyMuPDF
+    
+    - name: Build with Nuitka (Linux)
+      run: |
+        python -m nuitka --standalone --onefile \
+          --enable-plugin=anti-bloat \
+          --output-filename=mac2texpdf2-linux \
+          mac2texpdf2.py
+    
+    - name: Make executable
+      run: chmod +x mac2texpdf2-linux
+    
+    - name: Upload Linux artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mac2texpdf2-linux
+        path: mac2texpdf2-linux
+        retention-days: 90
+
+  create-release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download Windows artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: mac2texpdf2-windows
+    
+    - name: Download Linux artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: mac2texpdf2-linux
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: build-${{ github.run_number }}
+        release_name: Build ${{ github.run_number }}
+        draft: false
+        prerelease: false
+    
+    - name: Upload Windows Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./mac2texpdf2-windows.exe
+        asset_name: mac2texpdf2-windows.exe
+        asset_content_type: application/vnd.microsoft.portable-executable
+    
+    - name: Upload Linux Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./mac2texpdf2-linux
+        asset_name: mac2texpdf2-linux
+        asset_content_type: application/x-executable
