@@ -1,6 +1,6 @@
 **mac2texpdf2 : a utility for generating a pdf file from maxima commands**
 
-**Version 2.0 dated 2026-02-13**
+**Version 3.0 dated 2026-10-22**
 Author: Michel Gosse, michel.gosse@free.fr
 
 
@@ -20,8 +20,8 @@ chosen by the user.
 
 ## Software Principle 
 
-The software sends commands to the Maxima computer algebra system (line
-by line), which executes them and returns the result in LaTeX. The
+The software sends commands (ended by ; or $) to the Maxima computer algebra system, 
+which executes them and returns the result in LaTeX. The
 software retrieves this data and formats it in a LaTeX document which is
 then compiled with pdflatex. It is a Python script, which is also
 available as an executable for Windows or Linux.
@@ -47,7 +47,7 @@ To function, the software requires:
     mathtools, amsmath, amsfonts, asmssymb
 
 4.  If you wish to use the source version (the Python script), then
-    Python must also be installed on the computer.
+    Python3 must also be installed on the computer.
 
 *The various installations are detailed by operating system below.*
 
@@ -55,7 +55,7 @@ To function, the software requires:
 
 ## Step 1: Install Maxima and add Maxima to the PATH 
 
--> Download and install Maxima (version 5.49.0):
+-> Download and install Maxima (version 5.49.0 or later):
 
 <https://sourceforge.net/projects/maxima/files/Maxima-Windows/5.49.0-Windows/>
 
@@ -101,24 +101,26 @@ automatically).
 
 <https://www.python.org/downloads/windows/>
 
-## Step 4: Download the mac2texpdf2-eng.exe software 
+## Step 4: Download the mac2texpdf3-eng.exe software 
 
-Download the Windows version from the page:
+Download the Windows version 
+* from the release in github (the zip file contains the python scripts and all the binaries
+* or from the page:
 
 <https://maxima-french-doc.fr/interfaces/>
 
 You just need to unzip the file and double-click on the Windows
-executable retrieved (it is called mac2texpdf2-eng-w.exe).
+executable retrieved (it is called mac2texpdf3-eng-w.exe).
 
 Windows issues a warning indicating that the software is not certified.
 To launch it, you must accept to run unknown software\...
 
 **Alternative with Python: download the Python script
-mac2texpdf2-eng-w.py**
+mac2texpdf3-eng-w.py**
 
 Once unzipped, you need to open a command prompt, navigate to the folder
 containing the Python file, and type the command: *python
-mac2texpdf2-eng--w.py*
+mac2texpdf3-eng--w.py*
 
 # Installation for Linux 
 
@@ -141,28 +143,29 @@ Otherwise, they are contained in the texlive-latex-extra package.
 If you wish to use the Python script and not the binary, install Python
 via your distribution's package manager.
 
-## Step 4: Download the mac2texpdf2-eng.bin software 
+## Step 4: Download the mac2texpdf3-eng.bin software 
 
-Download the Linux version from the page:
+Download the Linux version either 
+* from the releases in github (the zip file contain all the scripts and all the binaries)
+* or from the page:
 
 <https://maxima-french-doc.fr/interfaces/>
 
 You just need to unzip the file and double-click on the Linux binary
-retrieved (it is called mac2texpdf2-eng.bin).
+retrieved (it is called mac2texpdf3-eng.bin).
 
 **Alternative with Python: download the Python script
-mac2texpdf2-eng.py**
+mac2texpdf3-eng.py**
 
 Once unzipped, you need to open a terminal, navigate to the folder
 containing the Python file, and type the command: *python3
 mac2texpdf2-eng.py*
 
-# Using mac2texpdf2 
+# Using mac2texpdf3 
 
 The operation is very simple:
 
--   Enter a series of Maxima commands in the text area. *Each command is
-    on a single line and must end with a ;*
+-   Enter a series of Maxima commands in the text area. Each command must end with ; or $
 
 -   Choose the font size for the PDF that will be generated. If there
     are graphics, choose the scale for the graphics (between 0 and 1).
@@ -174,33 +177,31 @@ The operation is very simple:
 -   If you want to retrieve the PDF and the corresponding LaTeX file
     (with the document images), click on the export folder button.
 
+# an Import mac file button let you choose a mac file from Maxima. All the commands
+of the mac file are copied in the editor.
+
 ## Some points of attention 
 
--   For graphics, use the draw2d and draw3d commands. The wxdraw2d and
-    wsdraw3d commands are specific to wxMaxima software and are not
-    recognized by Maxima which ignores them.
-
 -   Since Maxima input/output is not numbered by mac2texpdf2 software,
-    you cannot use % to designate the previous result. For example:
+    you cannot use %on to designate the result of the input n (%in).
+   Therefore, % is recognized by mac2texpdf3 and is the last result of the computation.
+   For example, this commands works in version 3.0
 
         solve(a*x^2-1=0,x);
         subst(5,a,%);
 
-    does not work. Instead, each result must be named to be used later:
-
-        eq:solve(a*x^2-1=0,x);
-        subst(5,a,eq);
+   
 
 # The files of the project 
 
-- mac2texpdf2.py : the python script for Linux in french
-- mac2texpdf2-eng.py : the python script for Linux in english
-- mac2texpdf2-w.py : the python script for windows in french
-- mac2texpdf2-eng-w.py : the python script for windows in english
-- mac2texpdf2.bin : the Linux binary in french
-- mac2texpdf2-eng.bin : the Linux binary in english
-- mac2texpdf2-w.exe : the Windows binary in french
-- mac2texpdf2-eng-w.exe : the Windows binary in english
+- mac2texpdf3.py : the python script for Linux in french
+- mac2texpdf3-eng.py : the python script for Linux in english
+- mac2texpdf3-w.py : the python script for windows in french
+- mac2texpdf3-eng-w.py : the python script for windows in english
+- mac2texpdf3.bin : the Linux binary in french
+- mac2texpdf3-eng.bin : the Linux binary in english
+- mac2texpdf3-w.exe : the Windows binary in french
+- mac2texpdf3-eng-w.exe : the Windows binary in english
 
 # Links and references 
 
@@ -208,11 +209,11 @@ The operation is very simple:
 
 <https://maxima-french-doc.fr/documentation/>
 
-## mac2texpdf2 software page 
+## mac2texpdf3 software page 
 
 <https://maxima-french-doc.fr/interfaces/>
 
-## mac2texpdf2 software development site 
+## mac2texpdf3 software development site 
 
 The software is under development in a GitHub repository:
 
