@@ -15,7 +15,7 @@ chosen by the user.
 
 ## Screenshots 
 
-<img width="359" height="458" alt="screenshot1" src="https://github.com/user-attachments/assets/4ef06cb6-08e1-443c-a6f2-fd18a1e10fac" />
+<img width="596" height="629" alt="image" src="https://github.com/user-attachments/assets/f56d0bd7-d05a-4baa-a3dd-523ff36b6197" />
 <img width="677" height="885" alt="screenshot2" src="https://github.com/user-attachments/assets/1791b2ec-7d58-4c70-8139-c1a363fe0e87" />
 
 ## Software Principle 
