@@ -1,4 +1,5 @@
-**mac2texpdf2 : a utility for generating a pdf file from maxima commands**
+**mac2texpdf : a utility for generating a pdf file from Maxima commands**
+**mac2texpdf3 is the version 3.0 of this program
 
 **Version 3.0 dated 2026-10-22**
 Author: Michel Gosse, michel.gosse@free.fr
