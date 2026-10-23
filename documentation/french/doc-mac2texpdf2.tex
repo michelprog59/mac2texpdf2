@@ -1,0 +1,350 @@
+ \documentclass[a4paper, 11pt]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[french]{babel}
+\usepackage[left=2cm,right=2cm,top=1.5cm,bottom=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{lastpage}
+\usepackage{times}
+%\usepackage[dvips]{graphicx}
+\usepackage{epsfig}
+\usepackage{amsmath}
+%\usepackage{pgf,pgfarrows,pgfautomata,pgfheaps,pgfnodes,pgfshade}
+\usepackage[useregional]{datetime2}
+%\usepackage[amsmath]{maxiplot}
+
+\usepackage{xcolor, soul}
+%\sethlcolor{green}
+
+\usepackage{tikz,tkz-tab}
+\usepackage{tabularx}
+
+\usepackage{moreverb}
+\usepackage{hyperref}
+
+\usepackage{makeidx} 
+\makeindex
+
+\usepackage{multicol}
+\usepackage[tikz]{bclogo}
+\usepackage{array}
+
+\usepackage[shortlabels]{enumitem}
+%\setlist[itemize,1]{label=$\star$}
+\setlist[itemize,1]{label=\textbullet}
+\setlist[itemize,2]{label=$\diamondsuit$} 
+
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\setlength{\parindent}{0pt}
+
+\newcounter{num}
+\renewcommand{\thenum}{\Roman{num}}
+\newcommand{\exo}{\addtocounter{num}{1}{\noindent \textbf{Exercice~\thenum~:}}}
+\newenvironment{exercice}{\exo}{\vspace{0.4cm}}
+\newcommand{\version}{3.0}
+
+\begin{document}
+
+\pagestyle{fancy} \lhead{} \chead{} \rhead{} 
+\rfoot{\small{{\thepage/\pageref{LastPage}}}} 
+\cfoot{Version \version} 
+\lfoot{Logiciel mac2texpdf3}
+
+\setcounter{tocdepth}{2}
+\renewcommand*{\contentsname}{Sommaire}
+
+\fbox{\makebox[\textwidth][c]{\textbf{
+\LARGE Documentation du logiciel mac2texpdf3
+}}}
+
+\begin{center}
+{\large \textbf{Version \version{} du \today} \\
+Auteur : Michel Gosse, michel.gosse@free.fr}
+\end{center}
+
+ 
+%\tableofcontents
+
+\section*{Présentation}
+Ce logiciel est un utilitaire permettant la saisie de commandes pour le logiciel Maxima (soit en les saisissant directement, soit avec un copier/coller, soit via l'import d'un fichier .mac de commandes Maxima) qui génère un fichier PDF comprenant les commandes saisies ainsi que les résultats calculés par Maxima. Il permet en outre l'exportation du fichier \LaTeX{} utilisé pour la production du PDF ainsi que des images du document dans un dossier choisi par l'utilisateur.
+
+\subsection*{Copies d'écran}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{img1mac2tex.png}% 
+  \hspace{0.05\textwidth}%
+  \includegraphics[width=0.45\textwidth]{img3mac2tex.png}
+\end{figure}
+
+\subsection*{Principe du logiciel}
+
+Le logiciel envoie les commandes au logiciel de calcul formel Maxima (chaque commande devant se terminer soit par un ; soit par un \$), qui les exécute et renvoie le résultat en \LaTeX{}. Le logiciel récupère ces données et les met en page dans un document \LaTeX{} qui est ensuite compilé avec pdflatex. Il s'agit d'un script Python, qui est aussi disponible sous la forme d'un exécutable pour Windows ou pour Linux.
+
+\subsection*{Comparaison avec wxMaxima}
+
+Cet utilitaire est un outil léger et rapide qui permet d'obtenir rapidement un document de bonne qualité comprenant les résultats calculés par Maxima de commandes entrées par l'utilsateur (au format PDF ou \LaTeX{}). Il n'offre pas la puissance de wxMaxima et n'est pas adapté pour résoudre des exercices complexes. On peut par exemple l'utiliser pour générer un document comprenant des calculs réalisés par Maxima que l'on incluera dans un document plus complet.
+
+\subsection*{Pré-requis}
+
+Pour fonctionner, le logiciel nécessite :
+\begin{enumerate}
+\item le logiciel Maxima
+\item le logiciel Gnuplot 
+\item une distribution \LaTeX{} incluant les packages suivants : xcolor, listings, datetime2, babel, geometry, fancyhdr, lastpage, graphicx, mathtools, amsmath, amsfonts, amssymb
+\item si on souhaite utiliser la version source (le script Python), alors il faut aussi que Python soit installé sur l'ordinateur.
+\end{enumerate} 
+
+\emph{Les différentes installations sont détaillés par système d'exploitation ci-dessous.}
+
+\section*{Installation pour Windows}
+
+\subsection*{Etape 1 : installer Maxima et mettre Maxima dans le PATH}
+$\blacktriangleright$ Télécharger et installer Maxima (version 5.49.0) :
+\begin{center}
+\href{https://sourceforge.net/projects/maxima/files/Maxima-Windows/5.49.0-Windows/}
+{https://sourceforge.net/projects/maxima/files/Maxima-Windows/5.49.0-Windows/}
+\end{center}
+
+$\blacktriangleright$ Modifier les variable d'environnement :
+\begin{enumerate}
+\item Ouvrir les paramètres : Touche Windows + I
+\item Aller dans Système → À propos.
+\item Cliquer sur Paramètres avancés du système (ou Paramètres système avancés).
+\item Dans la fenêtre qui s’ouvre, cliquer sur le bouton Variables d’environnement… en bas
+\item Choisir PATH et modifier
+\item Rajouter les deux lignes en fin du texte \\
+C:\textbackslash maxima-5.49.01 \textbackslash bin \\
+C:\textbackslash maxima-5.49.01 \textbackslash gnuplot \textbackslash bin
+\item Valider avec OK plusieurs fois pour fermer toutes les fenêtres
+\end{enumerate}
+
+\textit{Remarque} : le logiciel Gnuplot est installé automatiquement en même temps que Maxima.
+
+\subsection*{Etape 2 : Intallation d'une distribution \LaTeX{}}
+Si \LaTeX est installé, vérifier que les packages  xcolor, listings, datetime2, babel, geometry, fancyhdr, lastpage, graphicx, mathtools, amsmath, amsfonts, asmssymb sont bien installés.
+
+Sinon, télécharger la distribution Texlive et l'installer (elle installe automatiquement tous les packages requis et modifie le PATH directement) :
+
+\begin{center}
+\href{https://tug.org/texlive/windows.html}{https://tug.org/texlive/windows.html}
+\end{center}
+
+\subsection*{Etape 3 facultative : installation de Python}
+
+Si vous souhaitez utiliserle script Python et non pas l'exécutable, il faut installer Python (l'installation l'ajoute aussi dans le PATH automatiquement).
+
+\begin{center}
+\href{https://www.python.org/downloads/windows/}{https://www.python.org/downloads/windows/}
+\end{center}
+
+\subsection*{Etape 4 : Télécharger le logiciel mac2texpdf3.exe}
+Télécharger la version Windows sur la page :
+
+\begin{center}
+\href{https://maxima-french-doc.fr/interfaces/}{https://maxima-french-doc.fr/interfaces/}
+\end{center}
+Il reste à dézipper le fichier et à double-cliquer sur l'exécutable Windows ainsi récupéré (il s'appelle mac2texpdf3-w.exe).
+
+Il est possibe que Windows émette un avertissement indiquant que le logiciel n'est pas certifié. Pour le lancer, il faut juste accepter de lancer un logiciel inconnu...
+
+\textbf{Alternative avec Python : télécharger le script Python mac2texpdf3-w.py}
+
+Une fois dézippé, il faut ouvrir une invite de commandes, se placer dans le dossier contenant le fichier python, et taper la commande :
+\textit{python3 mac2texpdf3-w.py}
+
+\section*{Installation pour Linux}
+
+\subsection*{Etape 1 : Installer Maxima}
+Si le logiciel  n'est pas installé, on peut soit l'installer via le gestionnaire de package de sa distribution, ou le télécharger à partir de la page :
+
+\begin{center}
+\href{https://sourceforge.net/projects/maxima/files/Maxima-Linux/5.49.0-Linux/}{https://sourceforge.net/projects/maxima/files/Maxima-Linux/5.49.0-Linux/}
+\end{center}
+Le PATH est ajouté automatiquement (contrairement à windows).
+
+\subsection*{Etape 2 : Installer \LaTeX{}}
+A faire avec le gestionnaire de packages de sa distribution. On fera une installation complète pour avoir tous les packages requis. Sinon, ils sont contenus dans le package texlive-latex-extra.
+
+\subsection*{Etape 3: Facultatif : installation de Python}
+Si l'on souhaite utiliser le script Python et non pas le binaire, on installe Python via le gestionnaire de packages de sa distribution.
+
+\subsection*{Etape 4 : Télécharger le logiciel mac2texpdf3.bin}
+Télécharger la version Linux sur la page :
+
+\begin{center}
+\href{https://maxima-french-doc.fr/interfaces/}{https://maxima-french-doc.fr/interfaces/}
+\end{center}
+Il reste à dézipper le fichier et à double-cliquer sur le binaire Linux ainsi récupéré (il s'appelle mac2texpdf3.bin).
+
+\textbf{Alternative avec Python : télécharger le script Python mac2texpdf3.py}
+
+Une fois dézippé, il faut ouvrir un terminal, se placer dans le dossier contenant le fichier python, et taper la commande :
+\textit{python3 mac2texpdf2.py}
+
+
+\section*{Utilisation de mac2texpdf3}
+
+Le fonctionnement est très simple :
+\begin{itemize}
+\item On entre dans la zone de texte une suite de commandes Maxima. \emph{Chaque commande doit se terminer par ; ou par \$}
+\item On choisit la taille de la police pour le PDF qui sera généré. S'il y a des graphiques, on choisit l'échelle pour les graphiques (entre 0 et 1).
+\item On clique sur Générer le PDF
+\item Il reste à cliquer sur Voir le PDF. 
+\item Si on souhaite récupérer le PDF et le fichier \LaTeX{} correspondant (avec les images du document), on clique sur le bouton exporter dossier.
+\end{itemize}
+
+\subsection*{Un point d'attention}
+
+Les entrées/sorties de Maxima n'étant pas numérotées par le logiciel mac2texpdf3, on ne peut pas utiliser \%n pour désigner le résultat du calcul numéro n de Maxima. Par contre, la commande \% est reconnue et désigne le résultat du calcul précédent.
+
+\section*{Nouveautés de la version 3.0 par rapport à la 2.0}
+
+\subsection*{Saisie Maxima}
+
+\begin{itemize}
+
+  \item \textbf{Résultat précédent \texttt{\%}} :
+  \verb|%| désigne désormais le résultat de la commande
+  précédente (par exemple \verb|(x+1)^2;| puis
+  \verb|expand(%);|). Les constantes \verb|%pi|,
+  \verb|%e|, \verb|%i| et les chaînes contenant \verb|%|
+  ne sont pas modifiées.
+
+  \item \textbf{Commandes sur plusieurs lignes} :
+  une commande peut s'étendre sur plusieurs lignes ;
+  elle se termine au premier \verb|;| ou \verb|$|
+  situé hors d'une chaîne ou d'un commentaire.
+  Plusieurs commandes sur la même ligne sont aussi acceptées.
+
+  \item \textbf{Commentaires} :
+  les commentaires \verb|/* ... */|, y compris imbriqués
+  ou sur plusieurs lignes, sont ignorés.
+  Les lignes commençant par \verb|*|, \verb|%%| ou
+  \verb|#| sont aussi des commentaires.
+
+  \item \textbf{Terminateur \texttt{\$}} :
+  les commandes terminées par \verb|$| sont acceptées.
+  L'option \verb|AFFICHER_RESULTAT_DOLLAR| indique
+  si leur résultat est affiché.
+
+  \item \textbf{Import de fichiers \texttt{.mac}} :
+  nouveau bouton \textbf{Importer .mac} qui charge
+  un fichier Maxima dans l'éditeur.
+  Les encodages UTF-8, cp1252 et Latin-1 sont détectés.
+
+  \item \textbf{Tout sélectionner} :
+  \texttt{Ctrl+A} (\texttt{Cmd+A} sous macOS)
+  fonctionne dans l'éditeur.
+
+\end{itemize}
+
+\subsection*{Graphiques}
+
+\begin{itemize}
+
+  \item Les commandes wxMaxima sont converties automatiquement :
+  \texttt{wxdraw2d}, \texttt{wxdraw3d}, \texttt{wxdraw},
+  \texttt{wxplot2d}, \texttt{wxplot3d},
+  \verb|wximplicit_plot|, \verb|wxcontour_plot|.
+
+  \item Prise en charge de \verb|implicit_plot|,
+  \verb|contour_plot| et de \texttt{draw}
+  avec plusieurs scènes.
+
+\end{itemize}
+
+\subsection*{Sortie PDF / \LaTeX}
+
+\begin{itemize}
+
+  \item \textbf{Libellés en couleur} :
+  \emph{Commande} en bleu, \emph{Résultat} en rouge sombre,
+  \emph{Affichage} en vert.
+
+  \item \textbf{Sortie de \texttt{print}, \texttt{printf},
+  \texttt{disp}, \texttt{display}, \texttt{for},
+  \texttt{while}\ldots} :
+  elle est maintenant récupérée et affichée dans un bloc
+  \emph{Affichage} (elle était perdue auparavant).
+  La valeur retournée n'est plus répétée comme
+  \emph{Résultat}.
+
+  \item \textbf{Messages de Maxima}
+  (erreurs, par exemple) :
+  affichés dans le bloc \emph{Affichage}.
+
+  \item \textbf{Définitions de fonctions}
+  (\texttt{define}, \texttt{:=}) :
+  affichées en texte brut, sans le \verb|;| final,
+  avec un espacement normal.
+
+  \item \textbf{Longues listes} :
+  découpées en lignes de 10 éléments complets.
+  Cela corrige une erreur de compilation \LaTeX{}
+  sur des éléments comme \verb|\frac{5\pi}{6}|
+  produits par Maxima.
+
+  \item Les commandes contenant des barres obliques inverses
+  ou des guillemets s'affichent correctement.
+
+\end{itemize}
+
+\subsection*{Plateformes et langues}
+
+\begin{itemize}
+
+  \item Versions Linux et Windows, chacune disponible
+  en français et en anglais.
+
+  \item Sous Windows, \texttt{maxima.bat} est utilisé
+  et les chemins transmis à Maxima utilisent \verb|/|.
+
+\end{itemize}
+
+\section*{Prérequis}
+
+Maxima, gnuplot (pour les graphiques) et une distribution
+\LaTeX{} fournissant \texttt{pdflatex} doivent être installés
+et accessibles dans le \texttt{PATH}.
+
+\section*{Limitations connues}
+
+\begin{itemize}
+
+  \item Les commandes d'animation
+  (par exemple \verb|wxanimate_draw|,
+  \verb|with_slider_draw|) ne sont pas prises en charge,
+  la sortie étant un fichier PDF/\LaTeX.
+
+  \item \verb|%o1|, \verb|%i1| et \verb|%th(n)|
+  ne sont pas pris en charge ; utilisez \verb|%|
+  pour le résultat précédent.
+
+\end{itemize}
+
+
+\section*{Liens et références }
+
+\subsection*{Documentation sur Maxima}
+\href{https://maxima-french-doc.fr/documentation/}{https://maxima-french-doc.fr/documentation/}
+
+\subsection*{Page du logiciel mac2texpdf3}
+\href{https://maxima-french-doc.fr/interfaces/}{https://maxima-french-doc.fr/interfaces/}
+
+\subsection*{Site du développement du logiciel mac2texpdf3}
+Le logiciel est en développement dans un dépot github :
+
+\href{https://github.com/michelprog59/mac2texpdf2}{https://github.com/michelprog59/mac2texpdf2}
+
+\subsection*{Licence et contact}
+Le logiciel est distribué Distribué sous licence GNU GENERAL PUBLIC LICENSE (GPL) v3.0 et peut être utilisé et modifié librement.
+
+Pour toutes demandes d'évolution ou de signalement de bugs, on peut soit le faire directement sur github, soit m'envoyer un mail à michel.gosse@free.fr
+
+\end{document}
