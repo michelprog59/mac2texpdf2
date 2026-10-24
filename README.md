@@ -33,7 +33,7 @@ This utility is a lightweight and fast tool that allows you to quickly
 obtain a high-quality document containing the results calculated by
 Maxima from commands entered by the user (in PDF or LaTeX format). It
 does not offer the power of wxMaxima and is not suitable for solving
-complex exercises.
+very complex exercises.
 
 ## Prerequisites 
 
@@ -45,7 +45,7 @@ To function, the software requires:
 
 3.  A LaTeX distribution including the following packages: xcolor,
     listings, datetime2, babel, geometry, fancyhdr, lastpage, graphicx,
-    mathtools, amsmath, amsfonts, asmssymb
+    mathtools, amsmath, amsfonts, amssymb
 
 4.  If you wish to use the source version (the Python script), then
     Python3 must also be installed on the computer.
@@ -86,7 +86,7 @@ Maxima.
 
 If LaTeX is installed, verify that the packages xcolor, listings,
 datetime2, babel, geometry, fancyhdr, lastpage, graphicx, mathtools,
-amsmath, amsfonts, asmssymb are properly installed.
+amsmath, amsfonts, amssymb are properly installed.
 
 Otherwise, download the Texlive distribution and install it (it
 automatically installs all required packages and modifies the PATH
@@ -113,14 +113,14 @@ Download the Windows version
 You just need to unzip the file and double-click on the Windows
 executable retrieved (it is called mac2texpdf3-eng-w.exe).
 
-Windows issues a warning indicating that the software is not certified.
+Windows issues sometimes a warning indicating that the software is not certified.
 To launch it, you must accept to run unknown software\...
 
 **Alternative with Python: download the Python script
 mac2texpdf3-eng-w.py**
 
 Once unzipped, you need to open a command prompt, navigate to the folder
-containing the Python file, and type the command: *python
+containing the Python file, and type the command: *python3
 mac2texpdf3-eng--w.py*
 
 # Installation for Linux 
@@ -178,13 +178,13 @@ The operation is very simple:
 -   If you want to retrieve the PDF and the corresponding LaTeX file
     (with the document images), click on the export folder button.
 
-# an Import mac file button let you choose a mac file from Maxima. All the commands
-of the mac file are copied in the editor.
+# an Import mac file button let you choose a mac file from Maxima. 
+All the commands of the mac file are copied in the editor.
 
-## Some points of attention 
+## One point of attention 
 
--   Since Maxima input/output is not numbered by mac2texpdf2 software,
-    you cannot use %on to designate the result of the input n (%in).
+-   Since Maxima input/output is not numbered by mac2texpdf3 software,
+    you cannot use %On to designate the result of the input n (%In).
    Therefore, % is recognized by mac2texpdf3 and is the last result of the computation.
    For example, this commands works in version 3.0
 
