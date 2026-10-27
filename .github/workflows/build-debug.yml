@@ -1,0 +1,33 @@
+name: Build macOS app (debug)
+
+on:
+  workflow_dispatch:        # lancement manuel depuis l'onglet Actions
+  push:
+    tags: ['v*']            # ou automatiquement sur un tag v3.1, ...
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build .app
+        run: pyinstaller --windowed --noconfirm --name Maxima2TexPDF-debug mac2texpdf3_v3.1_debug.py
+
+      - name: Zip the .app (keeps permissions)
+        run: |
+          cd dist
+          ditto -c -k --keepParent Maxima2TexPDF-debug.app Maxima2TexPDF-debug-macos.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maxima2TexPDF-debug-macos
+          path: dist/Maxima2TexPDF-debug-macos.zip
