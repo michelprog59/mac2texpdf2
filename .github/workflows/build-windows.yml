@@ -1,0 +1,43 @@
+name: Build Windows executable
+
+on:
+  workflow_dispatch:          # lancement manuel depuis l'onglet Actions
+  push:
+    branches: [ main ]
+    paths:
+      - 'mac2texpdf4-w.py'
+      - '.github/workflows/build-windows.yml'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Nuitka
+        run: python -m pip install --upgrade pip nuitka
+
+      - name: Build with Nuitka
+        run: >
+          python -m nuitka
+          --onefile
+          --enable-plugin=tk-inter
+          --windows-console-mode=disable
+          --assume-yes-for-downloads
+          --output-dir=build
+          --output-filename=mac2texpdf4-w.exe
+          mac2texpdf4-w.py
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac2texpdf4-w
+          path: build/mac2texpdf4-w.exe
+          if-no-files-found: error
